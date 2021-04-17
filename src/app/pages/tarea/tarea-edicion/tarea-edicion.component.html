@@ -1,0 +1,17 @@
+<form class="exaple-container" [formGroup]="form" #frmPaciente="ngForm" (ngSubmit)="operar()">
+
+    <mat-form-field class="example-full-width">            
+        <input matInput placeholder="Tarea" minlength="3" required formControlName="tarea">               
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="frmPaciente.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" routerLink='/tarea' type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+    </button>
+
+
+</form>
