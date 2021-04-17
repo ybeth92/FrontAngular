@@ -4,7 +4,7 @@ import { TareaEdicionComponent } from './pages/tarea/tarea-edicion/tarea-edicion
 import { TareaComponent } from './pages/tarea/tarea.component';
 
 const routes: Routes = [
-  {path: 'tarea', component: TareaComponent, children:[
+  {path: '', component: TareaComponent, children:[
     {path: 'nuevo', component: TareaEdicionComponent},
     {path: 'edicion/:id', component: TareaEdicionComponent},
     {path: 'eliminar/:id', component: TareaEdicionComponent}
