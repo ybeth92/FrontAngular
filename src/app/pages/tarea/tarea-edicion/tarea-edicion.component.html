@@ -1,5 +1,11 @@
 <form class="exaple-container" [formGroup]="form" #frmPaciente="ngForm" (ngSubmit)="operar()">
 
+    <div [hidden]="true">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="ID" required formControlName="id">
+        </mat-form-field>
+    </div>
+
     <mat-form-field class="example-full-width">            
         <input matInput placeholder="Tarea" minlength="3" required formControlName="tarea">               
     </mat-form-field>

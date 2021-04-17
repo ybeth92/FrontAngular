@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Tarea } from 'src/app/_model/tarea';
 import { TareaService } from 'src/app/_service/tarea.service';
 
 @Component({
@@ -22,10 +24,12 @@ export class TareaEdicionComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      'tarea' : new FormControl('')
+      'id' : new FormControl(0),
+      'tarea' : new FormControl(''),
+      'estado' : new FormControl(0)
     });
 
-    this.route.params.subscribe((data: Params) => {
+    this.route.params.subscribe((data : Params) => {
       this.id = data['id'];
       this.edicion = data['id'] != null;
       this.initForm();
@@ -36,15 +40,42 @@ export class TareaEdicionComponent implements OnInit {
     if (this.edicion) {
       this.tareaService.listarPorId(this.id).subscribe(data => {
         this.form = new FormGroup({
+          'id': new FormControl(data.id),
           'tarea': new FormControl(data.tarea)
-          
         });
       });
     }
   }
 
   operar(){
-    
+    let tarea = new Tarea();
+    tarea.id = this.form.value['id'];
+    tarea.tarea = this.form.value['tarea'];
+
+    if (this.edicion) {
+      /*
+      this.tareaService.modificar(tarea).subscribe( () => {
+        this.tareaService.listar().subscribe(data =>{
+          this.tareaService.tareaCambio.next(data);
+          this.tareaService.mensajeCambio.next('MODIFICADO');
+        });
+      });*/
+      this.tareaService.modificar(tarea).pipe(switchMap( () =>{
+        return this.tareaService.listar()
+      })).subscribe(data =>{
+        this.tareaService.tareaCambio.next(data);
+        this.tareaService.mensajeCambio.next('MODIFICADO');
+      });
+
+    } else {
+      this.tareaService.registrar(tarea).subscribe(()=> {
+        this.tareaService.listar().subscribe(data =>{
+          this.tareaService.tareaCambio.next(data);
+          this.tareaService.mensajeCambio.next('REGISTRADO');
+        });
+      });
+    }
+    this.router.navigate(['tarea']);
   }
 
 }
