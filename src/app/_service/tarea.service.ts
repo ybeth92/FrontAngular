@@ -13,4 +13,8 @@ export class TareaService {
   listar(){
     return this.http.get<Tarea[]>(`${environment.HOST}/tareas`);
   }
+
+  listarPorId(id:number){
+    return this.http.get<Tarea>(`${environment.HOST}/tareas/${id}`);
+  }
 }
