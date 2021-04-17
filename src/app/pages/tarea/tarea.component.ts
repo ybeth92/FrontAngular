@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Tarea } from 'src/app/_model/tarea';
 import { TareaService } from 'src/app/_service/tarea.service';
 import { switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { TareaDialogComponent } from './tarea-dialog/tarea-dialog.component';
 
 @Component({
   selector: 'app-tarea',
@@ -17,7 +19,8 @@ export class TareaComponent implements OnInit {
 
   constructor(
     private tareaService : TareaService,
-    private snackBar : MatSnackBar
+    private snackBar : MatSnackBar,
+    private dialog : MatDialog
     ) { }
 
   ngOnInit(): void { 
@@ -30,7 +33,7 @@ export class TareaComponent implements OnInit {
     });
 
     this.tareaService.mensajeCambio.subscribe(data =>{
-      this.snackBar.open(data, 'AVISO')
+      this.snackBar.open(data, 'AVISO', {duration: 3000})
     })
   }
 
@@ -40,8 +43,14 @@ export class TareaComponent implements OnInit {
     })).subscribe(data =>{
       this.tareaService.setTareaCambio(data);
       this.tareaService.setMensajeCambio('ELIMINADO');
-    })
+    });
     
+  }
+
+  abrirDialog(tarea?: Tarea){
+    this.dialog.open(TareaDialogComponent, {
+      
+    })
   }
 
 }
