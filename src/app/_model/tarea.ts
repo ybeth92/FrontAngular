@@ -1,5 +1,5 @@
 export class Tarea{
     id!: number;
     tarea!: string;
-    estado!: number;
+    estado!: string;
 }

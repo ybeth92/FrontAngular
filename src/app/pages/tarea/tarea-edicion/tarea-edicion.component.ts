@@ -26,7 +26,7 @@ export class TareaEdicionComponent implements OnInit {
     this.form = new FormGroup({
       'id' : new FormControl(0),
       'tarea' : new FormControl(''),
-      'estado' : new FormControl(0)
+      'estado' : new FormControl('')
     });
 
     this.route.params.subscribe((data : Params) => {
@@ -41,7 +41,8 @@ export class TareaEdicionComponent implements OnInit {
       this.tareaService.listarPorId(this.id).subscribe(data => {
         this.form = new FormGroup({
           'id': new FormControl(data.id),
-          'tarea': new FormControl(data.tarea)
+          'tarea': new FormControl(data.tarea),
+          'estado': new FormControl(data.estado)
         });
       });
     }
@@ -51,15 +52,10 @@ export class TareaEdicionComponent implements OnInit {
     let tarea = new Tarea();
     tarea.id = this.form.value['id'];
     tarea.tarea = this.form.value['tarea'];
-
+    tarea.estado = this.form.value['estado'];
+    
     if (this.edicion) {
-      /*
-      this.tareaService.modificar(tarea).subscribe( () => {
-        this.tareaService.listar().subscribe(data =>{
-          this.tareaService.tareaCambio.next(data);
-          this.tareaService.mensajeCambio.next('MODIFICADO');
-        });
-      });*/
+      
       this.tareaService.modificar(tarea).pipe(switchMap( () =>{
         return this.tareaService.listar()
       })).subscribe(data =>{
@@ -75,7 +71,7 @@ export class TareaEdicionComponent implements OnInit {
         });
       });
     }
-    this.router.navigate(['tarea']);
+    this.router.navigate(['/']);
   }
 
 }
